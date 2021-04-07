@@ -22,14 +22,14 @@ function init() {
       });
       
   let otu_ids = data.samples[0].otu_ids.slice(0,10).reverse();
-  let sample_values = data.samples[0].sample_values
+  let sample_values = data.samples[0].sample_values.slice(0,10).reverse();
   let otu_labels = data.samples[0].otu_labels;
 
 
   let trace1 = {
 
     x: sample_values,
-    y: otu_ids.slice(0,10).reverse(),
+    y: otu_ids,
     type: "bar",
     orientation: "h" 
 }
@@ -66,4 +66,11 @@ Plotly.newPlot('bar', dataa, layout);
 };
 
 Plotly.newPlot('bubble', data2, layout2)})}
+
+function optionChanged(otu_ids) {
+  data_info(otu_ids);
+  init(otu_ids);
+}
+
+
 init() 
