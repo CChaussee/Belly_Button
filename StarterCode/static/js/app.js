@@ -11,19 +11,24 @@ function data_info () {
   data_info();
   // Repeating getting the data because javascript wont reference things
   function init() {
-    var dropdown = d3.select("#selDataset");
-    d3.json("samples.json").then((data)=> {
-        console.log(data)
-        data.names.forEach(function(name) {
-            dropdown.append("option").text(name).property("value");
-        });
+    // Grab a reference to the dropdown select element
+    var selector = d3.select("#selDataset");
+    // Use the list of sample names to populate the select options
+    d3.json("samples.json").then((data) => {
+      var sampleNames = data.names;
+      sampleNames.forEach((sample) => {
+        selector
+          .append("option")
+          .text(sample)
+          .property("value", sample);
+      });
     let otu_ids = data.samples[0].otu_ids.slice(0,10).reverse();
     let sample_values = data.samples[0].sample_values
     let otu_labels = data.samples[0].otu_labels;
     //creation of traces
     let trace1 = {
       x: sample_values,
-      y: otu_ids.slice(0,10).reverse(),
+      y: otu_ids,
       type: "bar",
       orientation: "h" 
   }
