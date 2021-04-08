@@ -1,5 +1,5 @@
 
-
+// how my mind proccesses things
 function data_info () {
 d3.json('samples.json').then((data) => {
     console.log(data);
