@@ -44,10 +44,17 @@ function data_info(plotmaterial) {
         });
 }
 
-//sleceting demographic information
+//sleceting demographic information, dislike that you have to reference the data again
 function demographic(plotmaterial) {
   d3.joson("smples.json").then((data) => {
     let metadata = data.metadata;
     console.log(metadata)
   })
+}
+//function to fill in the drop down menu
+function init() {
+  let dropdown = d3.select("#selDataset");
+    data.names.forEach(function(name) {
+      dropdown.appened("option").text(name).property("value");
+    })
 }
