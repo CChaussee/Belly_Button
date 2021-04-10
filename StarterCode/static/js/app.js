@@ -23,4 +23,19 @@ function data_info(plotmaterial) {
             title: "Top 10 Belly Button Samples"
           };
 // creating bar chart plotly
-          Plotly.newPlot("bar", data1, layout1);          
+          Plotly.newPlot("bar", data1, layout1);        
+// buble chart time
+          let trace2 = {
+            x: topids,
+            y: sampleValues,
+            mode: "markers",
+            marker: {
+              size: sampleValues,
+              color: topids
+            },
+            text : labels
+          };
+          let layout2 = {
+            height: 600,
+            width: 800
+          };
