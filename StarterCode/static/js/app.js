@@ -1,69 +1,100 @@
 // It only makes sense in my mind to wrtie things in function, sorry
-function data_info (plotmaterial) {
-//Reading in samples.json
+function data_info (plotmaterials) {
+//Read samples.json
       d3.json("samples.json").then (data =>{
           console.log(data)
-// grabbing data needed for plots          
-          let topids = data.samples[0].otu_ids.slice(0,10).sort((a,b) => b-a);
-          console.log(topids)
-          let sampleValues =  data.samples[0].sample_values.slice(0,10);
+          let ids = data.samples[0].otu_ids;
+          console.log(ids)
+          let sampleValues = data.samples[0].sample_values.slice(0,10).reverse();
           console.log(sampleValues)
+          let label =  data.samples[0].otu_labels.slice(0,10);
+          console.log (label)
+// getting the top 10 and reversing it
+          let topids = (data.samples[0].otu_ids.slice(0, 10)).reverse();
+          let OTU_id = topids.map(d => "OTU " + d);
+          console.log(`OTU IDS: ${OTU_id}`)
           let labels =  data.samples[0].otu_labels.slice(0,10);
-          console.log (labels)
-// creating bar plot trace
+          console.log(`OTU_labels: ${labels}`)
           let trace1 = {
-            x: sampleValues,
-            y: topids,
-            type: bar,
-            orientation: "h"
+              x: sampleValues,
+              y: OTU_id,
+              text: labels,
+              type:"bar",
+              orientation: "h",
           };
-// bar plot data and layout
           let data1 = [trace1];
+  
           let layout1 = {
-            title: "Top 10 Belly Button Samples"
+              title: "Top 10 Belly Button Samples"
           };
-// creating bar chart plotly
-          Plotly.newPlot("bar", data1, layout1);        
-// buble chart time
+ // creating the bar chart 
+      Plotly.newPlot("bar", data1, layout1);
+//bubble chart data
           let trace2 = {
-            x: topids,
-            y: sampleValues,
-            mode: "markers",
-            marker: {
-              size: sampleValues,
-              color: topids
-            },
-            text : labels
+              x: data.samples[0].otu_ids,
+              y: data.samples[0].sample_values,
+              mode: "markers",
+              marker: {
+                  size: data.samples[0].sample_values,
+                  color: data.samples[0].otu_ids
+              },
+              text:  data.samples[0].otu_labels
+  
           };
+  
           let layout2 = {
-            height: 600,
-            width: 800
+              xaxis:{title: "OTU ID"},
+              height: 600,
+              width: 800
           };
+  
           let data2 = [trace2];
-          Plotly.newPlot("bubble", data2, layout2);
-        });
-}
+  
+      Plotly.newPlot("bubble", data2, layout2); 
+      
+      });
+  }  
+  //filing in demographics table
+  function demographics(plotmaterials) {
+  
+      d3.json("samples.json").then((data)=> {
 
-//sleceting demographic information, dislike that you have to reference the data again
-function demographic(plotmaterial) {
-  d3.joson("smples.json").then((data) => {
-    let metadata = data.metadata;
-    console.log(metadata)
-  })
-}
-//function to fill in the drop down menu
-function init() {
-  let dropdown = d3.select("#selDataset");
-  d3.json("samples.json").then((data)=> {
-    console.log(data)
-    data.names.forEach(function(name) {
-      dropdown.appened("option").text(name).property("value");
-    })
-})
-//function to have graphs change when a new data set is selected from dropdown menu
-function optionChanged(plotmaterial) {
-  data_info(plotmaterial);
-  demographic(plotmaterial);
-}
+          let metadata = data.metadata;
+  
+          console.log(metadata)
+//convert to sting to create text for table  
+         let result = metadata.filter(meta => meta.ids.toString() === id)[0];
+         let demographicInfo = d3.select("#sample-metadata");
+          
+         demographicInfo.html("");
+      })
+      }
+  
 
-init();}
+// creating function to have the dropdown menu work correctly 
+  function optionChanged(plotmaterials) {
+      data_info(plotmaterials);
+      demographics(plotmaterials);
+  }
+  
+
+  function init() {
+// select dropdown menu 
+      let dropdown = d3.select("#selDataset");
+  
+//forever reading in the data again
+      d3.json("samples.json").then((data)=> {
+          console.log(data)
+// get the id data to the dropdwown menu
+          data.names.forEach(function(name) {
+              dropdown.append("option").text(name).property("value");
+          });
+  
+
+          data_info(data.names[0]);
+          demographics(data.names[0]);
+      });
+  }
+  
+  init();
+
