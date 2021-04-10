@@ -29,7 +29,7 @@ function data_info (plotmaterials) {
           };
  // creating the bar chart 
       Plotly.newPlot("bar", data1, layout1);
-//bubble chart data
+//bubble chart data, top 10 not needed
           let trace2 = {
               x: data.samples[0].otu_ids,
               y: data.samples[0].sample_values,
@@ -45,7 +45,7 @@ function data_info (plotmaterials) {
           let layout2 = {
               xaxis:{title: "OTU ID"},
               height: 600,
-              width: 800
+              width: 1000
           };
   
           let data2 = [trace2];
@@ -55,7 +55,7 @@ function data_info (plotmaterials) {
       });
   }  
   //filing in demographics table
-  function demographics(plotmaterials) {
+function demographics(plotmaterials) {
   
       d3.json("samples.json").then((data)=> {
 
@@ -63,13 +63,14 @@ function data_info (plotmaterials) {
   
           console.log(metadata)
 //convert to sting to create text for table  
-         let result = metadata.filter(meta => meta.ids.toString() === id)[0];
-         let demographicInfo = d3.select("#sample-metadata");
-          
+         let result = metadata.filter(meta => meta.plotmaterials.toString() === plotmaterials)[0];
+         let demographicInfo = d3.select("#sample-metadata"); 
          demographicInfo.html("");
-      })
-      }
-  
+         Object.entries(result).forEach((key) => {   
+          demographicInfo.append("h5").text(key[0].toUpperCase() + ": " + key[1] + "\n");    
+      });
+  });
+}
 
 // creating function to have the dropdown menu work correctly 
   function optionChanged(plotmaterials) {
@@ -97,4 +98,3 @@ function data_info (plotmaterials) {
   }
   
   init();
-
