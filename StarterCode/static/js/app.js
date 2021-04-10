@@ -54,6 +54,8 @@ function demographic(plotmaterial) {
 //function to fill in the drop down menu
 function init() {
   let dropdown = d3.select("#selDataset");
+  d3.json("samples.json").then((data)=> {
+    console.log(data)
     data.names.forEach(function(name) {
       dropdown.appened("option").text(name).property("value");
     })
@@ -64,4 +66,4 @@ function optionChanged(plotmaterial) {
   demographic(plotmaterial);
 }
 
-init();
+init();}
