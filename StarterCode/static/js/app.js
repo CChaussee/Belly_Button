@@ -39,3 +39,7 @@ function data_info(plotmaterial) {
             height: 600,
             width: 800
           };
+          let data2 = [trace2];
+          Plotly.newPlot("bubble", data2, layout2);
+        });
+}
