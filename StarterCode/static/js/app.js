@@ -17,3 +17,10 @@ function data_info(plotmaterial) {
             type: bar,
             orientation: "h"
           };
+// bar plot data and layout
+          let data1 = [trace1];
+          let layout1 = {
+            title: "Top 10 Belly Button Samples"
+          };
+// creating bar chart plotly
+          Plotly.newPlot("bar", data1, layout1);          
