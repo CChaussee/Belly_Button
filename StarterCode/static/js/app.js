@@ -58,3 +58,10 @@ function init() {
       dropdown.appened("option").text(name).property("value");
     })
 }
+//function to have graphs change when a new data set is selected from dropdown menu
+function optionChanged(plotmaterial) {
+  data_info(plotmaterial);
+  demographic(plotmaterial);
+}
+
+init();
