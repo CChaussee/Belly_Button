@@ -43,3 +43,11 @@ function data_info(plotmaterial) {
           Plotly.newPlot("bubble", data2, layout2);
         });
 }
+
+//sleceting demographic information
+function demographic(plotmaterial) {
+  d3.joson("smples.json").then((data) => {
+    let metadata = data.metadata;
+    console.log(metadata)
+  })
+}
