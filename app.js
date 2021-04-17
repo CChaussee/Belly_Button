@@ -3,9 +3,9 @@ function data_info (plotmaterials) {
 //Read samples.json
       d3.json("samples.json").then (data =>{
           console.log(data)
-          let ids = data.samples[0].otu_ids;
+          const ids = data.samples[0].otu_ids;
           console.log(ids)
-          let sampleValues = data.samples[0].sample_values.slice(0,10).reverse();
+          const sampleValues = data.samples[0].sample_values.slice(0,10).reverse();
           console.log(sampleValues)
           let label =  data.samples[0].otu_labels.slice(0,10);
           console.log (label)
@@ -60,39 +60,46 @@ function demographics(plotmaterials) {
     let metadata = data.metadata;
     console.log(metadata)
 //convert to string to create text for table  
-    const result = metadata.filter(meta => meta.data.toString() === data)[0];
+    let result = metadata.filter(sampleValues => sampleValues.id === sampleValues);
     let demographicInfo = d3.select("#sample-metadata"); 
     demographicInfo.html("");
     Object.entries(result).forEach((key) => {   
-    demographicInfo.append("h5")
-        .text(key[0].toUpperCase() + ": " + key[1] + "\n");    
+    demographicInfo.append("h5").text(key[0].toUpperCase());    
       });
   });
 }
-
+function init() {
 // creating function to have the dropdown menu work correctly 
-  function optionChanged(plotmaterials) {
-      data_info(plotmaterials);
-      demographics(plotmaterials);
-  }
+    let selector = d3.select("#selDataset");
+    d3.json("samples.json").then((data) => {
+        let sampleNames = data.names;
+        sampleNames.forEach((sample) => {
+            selector
+            .append("option")
+            .text(sample)
+            .property("value", sample);
+;
+  })
   
+    })
 
-  function init() {
 // select dropdown menu 
-      let dropdown = d3.select("#selDataset");
+    let dropdown = d3.select("#selDataset");
   
 //forever reading in the data again
-      d3.json("samples.json").then((data)=> {
-          console.log(data)
+    d3.json("samples.json").then((data)=> {
+        console.log(data)
 // get the id data to the dropdwown menu
-          data.names.forEach(function(name) {
-              dropdown.append("option").text(name).property("value");
+        data.names.forEach(function(name) {
+            dropdown.append("option").text(name).property("value");
           });
-  
 
-          data_info(data.names[0]);
-          demographics(data.names[0]);
+        data_info(data.names[0]);
+        demographics(data.names[0]);
       });
   }
-  
-  init();
+function optionChanged(newSample) {
+    data_info(newSample);
+    demographics(newSample);
+}  
+init();
