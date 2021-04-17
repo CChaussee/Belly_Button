@@ -56,18 +56,16 @@ function data_info (plotmaterials) {
   }  
   //filing in demographics table
 function demographics(plotmaterials) {
-  
-      d3.json("samples.json").then((data)=> {
-
-          let metadata = data.metadata;
-  
-          console.log(metadata)
+    d3.json("samples.json").then((data)=> {
+    let metadata = data.metadata;
+    console.log(metadata)
 //convert to string to create text for table  
-         let result = metadata.filter(meta => meta.plotmaterials.toString() === plotmaterials)[0];
-         let demographicInfo = d3.select("#sample-metadata"); 
-         demographicInfo.html("");
-         Object.entries(result).forEach((key) => {   
-          demographicInfo.append("h5").text(key[0].toUpperCase() + ": " + key[1] + "\n");    
+    const result = metadata.filter(meta => meta.data.toString() === data)[0];
+    let demographicInfo = d3.select("#sample-metadata"); 
+    demographicInfo.html("");
+    Object.entries(result).forEach((key) => {   
+    demographicInfo.append("h5")
+        .text(key[0].toUpperCase() + ": " + key[1] + "\n");    
       });
   });
 }
