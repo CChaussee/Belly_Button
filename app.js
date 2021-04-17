@@ -62,7 +62,7 @@ function demographics(plotmaterials) {
           let metadata = data.metadata;
   
           console.log(metadata)
-//convert to sting to create text for table  
+//convert to string to create text for table  
          let result = metadata.filter(meta => meta.plotmaterials.toString() === plotmaterials)[0];
          let demographicInfo = d3.select("#sample-metadata"); 
          demographicInfo.html("");
